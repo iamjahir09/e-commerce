@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Your cart | NovaCart{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">YOUR SELECTION</p><h1>Shopping cart</h1></div>
+{% if items %}
+<div class="cart-layout"><section class="cart-items">
+{% for item in items %}<article class="cart-item"><div class="cart-thumb">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">{% else %}<span>{{ item.product.name|first|upper }}</span>{% endif %}</div><div class="cart-item-info"><h3><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></h3><p>₹{{ item.product.price }} each</p><p>Quantity: {{ item.quantity }}</p></div><strong>₹{{ item.subtotal }}</strong><form method="post" action="{% url 'cart_remove' item.product.id %}">{% csrf_token %}<button class="remove-button" type="submit">Remove</button></form></article>{% endfor %}
+</section><aside class="summary-card"><h2>Order summary</h2><div class="summary-row"><span>Subtotal</span><strong>₹{{ total }}</strong></div><div class="summary-row"><span>Delivery</span><span>Free</span></div><div class="summary-row total-row"><span>Total</span><strong>₹{{ total }}</strong></div><a class="button full" href="{% url 'checkout' %}">Proceed to checkout</a><a class="continue-link" href="{% url 'product_list' %}">Continue shopping</a></aside></div>
+{% else %}<div class="empty-state"><h2>Your cart is empty</h2><p>Find something you like and add it here.</p><a class="button" href="{% url 'product_list' %}">Explore products</a></div>{% endif %}
+{% endblock %}

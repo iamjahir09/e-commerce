@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Shop | NovaCart{% endblock %}
+{% block content %}
+<section class="hero">
+    <div><p class="eyebrow">SMARTER ONLINE SHOPPING</p><h1>Find your next favourite.</h1><p>Explore useful everyday products in one simple place.</p></div>
+    <div class="hero-mark">N<span>+</span></div>
+</section>
+<div class="catalog-layout">
+    <aside class="filters">
+        <h3>Categories</h3>
+        <a class="{% if not selected_category %}active{% endif %}" href="{% url 'product_list' %}">All products</a>
+        {% for category in categories %}
+            <a class="{% if selected_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}{% if query %}&q={{ query|urlencode }}{% endif %}">{{ category.name }}</a>
+        {% empty %}
+            <p class="muted">Add categories in the admin panel.</p>
+        {% endfor %}
+    </aside>
+    <section class="catalog">
+        <div class="section-heading"><div><p class="eyebrow">THE COLLECTION</p><h2>{% if query %}Search results for “{{ query }}”{% else %}Featured products{% endif %}</h2></div><span>{{ products|length }} products</span></div>
+        <div class="product-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <a class="product-image" href="{{ product.get_absolute_url }}">
+                    {% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}">{% else %}<div class="image-placeholder"><span>{{ product.name|first|upper }}</span></div>{% endif %}
+                </a>
+                <div class="product-info">
+                    <p class="product-category">{{ product.category|default:"Everyday essentials" }}</p>
+                    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                    <p class="description">{{ product.description|truncatewords:15 }}</p>
+                    <div class="product-bottom"><strong>₹{{ product.price }}</strong><form method="post" action="{% url 'cart_add' product.id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'product_list' %}"><button class="add-button" type="submit">Add +</button></form></div>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state"><h3>No products found</h3><p>Add products from the admin panel or try another search.</p><a class="button" href="{% url 'product_list' %}">View all products</a></div>
+        {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

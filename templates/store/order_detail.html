@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }} | NovaCart{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ORDER CONFIRMATION</p><h1>Order #{{ order.id }}</h1><p class="muted">Placed on {{ order.created_at|date:"d M Y, h:i A" }}</p></div>
+<div class="checkout-layout"><section class="form-panel"><h2>Items ordered</h2>{% for item in order.items.all %}<div class="summary-row order-line"><span>{{ item.product_name }} × {{ item.quantity }}</span><strong>₹{{ item.price|floatformat:2 }}</strong></div>{% endfor %}<div class="summary-row total-row"><span>Total paid</span><strong>₹{{ order.total }}</strong></div><p class="status inline-status">{{ order.get_status_display }}</p></section><aside class="summary-card"><h2>Delivery address</h2><p>{{ order.full_name }}</p><p>{{ order.address|linebreaksbr }}</p><p>{{ order.city }} - {{ order.postal_code }}</p><p>{{ order.email }}</p><a class="continue-link" href="{% url 'order_history' %}">Back to my orders</a></aside></div>
+{% endblock %}

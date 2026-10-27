@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Create account | NovaCart{% endblock %}
+{% block content %}
+<section class="auth-wrap"><div class="auth-card"><p class="eyebrow">JOIN NOVACART</p><h1>Create your account</h1><p class="muted">Create an account to place and track orders.</p>
+<form method="post" class="stack-form">{% csrf_token %}
+{% for field in form %}<label>{{ field.label }}{{ field }}</label>{% if field.help_text %}<small>{{ field.help_text|safe }}</small>{% endif %}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}{% endfor %}
+{% if form.non_field_errors %}<p class="error">{{ form.non_field_errors }}</p>{% endif %}
+<button class="button full" type="submit">Create account</button></form><p class="auth-foot">Already registered? <a href="{% url 'login' %}">Log in</a></p></div></section>
+{% endblock %}
