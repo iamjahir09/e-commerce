@@ -38,7 +38,7 @@ ecommerce_advanced_web/
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
-├── db.sqlite3                 # Local database, if generated
+├── db.sqlite3
 ├── shopsite/
 │   ├── settings.py
 │   ├── urls.py
